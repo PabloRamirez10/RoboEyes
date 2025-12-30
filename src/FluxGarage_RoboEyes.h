@@ -725,7 +725,7 @@ void drawEyes(){
 
   // --- DIBUJAR NARIZ (Triángulo pequeño) ---
   // Offset relativo a bocaX y bocaY
-  _display->fillTriangle(bocaX - 4, bocaY,      // Esq sup izq
+  display->fillTriangle(bocaX - 4, bocaY,      // Esq sup izq
                          bocaX + 4, bocaY,      // Esq sup der
                          bocaX,     bocaY + 4,  // Punta abajo
                          SSD1306_WHITE);
@@ -734,14 +734,14 @@ void drawEyes(){
   int narizPuntaY = bocaY + 4;
   
   // Línea central pequeña
-  _display->drawLine(bocaX, narizPuntaY, bocaX, narizPuntaY + 2, SSD1306_WHITE);
+  display->drawLine(bocaX, narizPuntaY, bocaX, narizPuntaY + 2, SSD1306_WHITE);
   
   // Lado Izquierdo
-  _display->drawLine(bocaX, narizPuntaY + 2, bocaX - 4, narizPuntaY + 5, SSD1306_WHITE);
-  _display->drawLine(bocaX - 4, narizPuntaY + 5, bocaX - 7, narizPuntaY + 3, SSD1306_WHITE);
+  display->drawLine(bocaX, narizPuntaY + 2, bocaX - 4, narizPuntaY + 5, SSD1306_WHITE);
+  display->drawLine(bocaX - 4, narizPuntaY + 5, bocaX - 7, narizPuntaY + 3, SSD1306_WHITE);
   // Lado Derecho
-  _display->drawLine(bocaX, narizPuntaY + 2, bocaX + 4, narizPuntaY + 5, SSD1306_WHITE);
-  _display->drawLine(bocaX + 4, narizPuntaY + 5, bocaX + 7, narizPuntaY + 3, SSD1306_WHITE);
+  display->drawLine(bocaX, narizPuntaY + 2, bocaX + 4, narizPuntaY + 5, SSD1306_WHITE);
+  display->drawLine(bocaX + 4, narizPuntaY + 5, bocaX + 7, narizPuntaY + 3, SSD1306_WHITE);
   // =====================================================
   // FIN MODIFICACIÓN
   // =====================================================
