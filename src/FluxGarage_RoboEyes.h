@@ -709,7 +709,43 @@ void drawEyes(){
       sweat3XPos = sweat3XPosInitial-(sweat3Width/2); // keep the growing shape centered to initial x position
       display->fillRoundRect(sweat3XPos, sweat3YPos, sweat3Width, sweat3Height, sweatBorderradius, MAINCOLOR); // draw sweat drop
     }
+   
+  // Calculamos el centro de la cara basándonos en los ojos actuales.
+  // _x es usualmente la esquina superior izquierda del ojo izquierdo.
+  // width es el ancho de un ojo.
+  // space es el espacio entre ojos.
+  
+  // 1. Encontrar el centro X exacto entre los dos ojos
+  // (Posición X ojo izq + Ancho ojo + Mitad del espacio)
+  int bocaX = eyeLx + eyeLwidthCurrent + (spaceBetweenCurrent / 2);
+  
+  // 2. Encontrar la posición Y (debajo de los ojos)
+  // (Posición Y actual + Altura ojo + un pequeño margen de 2px)
+  int bocaY = eyeLy + eyeLheightCurrent + 2; 
 
+  // --- DIBUJAR NARIZ (Triángulo pequeño) ---
+  // Offset relativo a bocaX y bocaY
+  _display->fillTriangle(bocaX - 4, bocaY,      // Esq sup izq
+                         bocaX + 4, bocaY,      // Esq sup der
+                         bocaX,     bocaY + 4,  // Punta abajo
+                         SSD1306_WHITE);
+
+  // --- DIBUJAR BOCA (La 'W') ---
+  int narizPuntaY = bocaY + 4;
+  
+  // Línea central pequeña
+  _display->drawLine(bocaX, narizPuntaY, bocaX, narizPuntaY + 2, SSD1306_WHITE);
+  
+  // Lado Izquierdo
+  _display->drawLine(bocaX, narizPuntaY + 2, bocaX - 4, narizPuntaY + 5, SSD1306_WHITE);
+  _display->drawLine(bocaX - 4, narizPuntaY + 5, bocaX - 7, narizPuntaY + 3, SSD1306_WHITE);
+  // Lado Derecho
+  _display->drawLine(bocaX, narizPuntaY + 2, bocaX + 4, narizPuntaY + 5, SSD1306_WHITE);
+  _display->drawLine(bocaX + 4, narizPuntaY + 5, bocaX + 7, narizPuntaY + 3, SSD1306_WHITE);
+  // =====================================================
+  // FIN MODIFICACIÓN
+  // =====================================================
+  // _display->display(); // Esta línea ya debería estar en el código original al final
   display->display(); // show drawings on display
 
 } // end of drawEyes method
