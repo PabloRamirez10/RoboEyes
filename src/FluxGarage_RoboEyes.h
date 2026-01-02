@@ -82,6 +82,12 @@ bool cyclops = 0; // if true, draw only one eye
 bool eyeL_open = 0; // left eye opened or closed?
 bool eyeR_open = 0; // right eye opened or closed?
 
+// Mouth settings
+bool showMouth = false;    // turn mouth drawing on or off
+int mouthNoseSize = 4;     // Nose size (half width)
+int mouthWidth = 7;        // Width of the smile
+int mouthVerticalGap = 5;  // Distance from the eye
+
 
 //*********************************************************************************************
 //  Eyes Geometry
@@ -415,6 +421,12 @@ void setSweat (bool sweatBit) {
   sweat = sweatBit; // turn sweat on or off
 }
 
+void setMouth(bool active, int noseSize, int width, int gap) {
+  showMouth = active;
+  mouthNoseSize = noseSize;
+  mouthWidth = width;
+  mouthVerticalGap = gap;
+}
 
 //*********************************************************************************************
 //  GETTERS METHODS
@@ -710,43 +722,34 @@ void drawEyes(){
       display->fillRoundRect(sweat3XPos, sweat3YPos, sweat3Width, sweat3Height, sweatBorderradius, MAINCOLOR); // draw sweat drop
     }
    
-  // Calculamos el centro de la cara basándonos en los ojos actuales.
-  // _x es usualmente la esquina superior izquierda del ojo izquierdo.
-  // width es el ancho de un ojo.
-  // space es el espacio entre ojos.
-  
-  // 1. Encontrar el centro X exacto entre los dos ojos
-  // (Posición X ojo izq + Ancho ojo + Mitad del espacio)
-  int bocaX = eyeLx + eyeLwidthCurrent + (spaceBetweenCurrent / 2);
-  
-  // 2. Encontrar la posición Y (debajo de los ojos)
-  // (Posición Y actual + Altura ojo + un pequeño margen de 2px)
-  int bocaY = eyeLy + eyeLheightCurrent + 2; 
+  // Mouth drawing
+  if (showMouth) {
+    int centerX = eyeLx + eyeLwidthCurrent + (spaceBetweenCurrent / 2);
+    int eyeCenterY = eyeLy + (eyeLheightCurrent / 2);
+    int startY = eyeCenterY + (eyeLheightDefault / 2) + mouthVerticalGap;
 
-  // --- DIBUJAR NARIZ (Triángulo pequeño) ---
-  // Offset relativo a bocaX y bocaY
-  display->fillTriangle(bocaX - 4, bocaY,      // Esq sup izq
-                         bocaX + 4, bocaY,      // Esq sup der
-                         bocaX,     bocaY + 4,  // Punta abajo
-                         SSD1306_WHITE);
 
-  // --- DIBUJAR BOCA (La 'W') ---
-  int narizPuntaY = bocaY + 4;
-  
-  // Línea central pequeña
-  display->drawLine(bocaX, narizPuntaY, bocaX, narizPuntaY + 2, SSD1306_WHITE);
-  
-  // Lado Izquierdo
-  display->drawLine(bocaX, narizPuntaY + 2, bocaX - 4, narizPuntaY + 5, SSD1306_WHITE);
-  display->drawLine(bocaX - 4, narizPuntaY + 5, bocaX - 7, narizPuntaY + 3, SSD1306_WHITE);
-  // Lado Derecho
-  display->drawLine(bocaX, narizPuntaY + 2, bocaX + 4, narizPuntaY + 5, SSD1306_WHITE);
-  display->drawLine(bocaX + 4, narizPuntaY + 5, bocaX + 7, narizPuntaY + 3, SSD1306_WHITE);
-  // =====================================================
-  // FIN MODIFICACIÓN
-  // =====================================================
-  // _display->display(); // Esta línea ya debería estar en el código original al final
-  display->display(); // show drawings on display
+    int noseTipY = startY + mouthNoseSize;
+
+    display->fillTriangle(
+        centerX - mouthNoseSize, startY,        // Esq sup izq
+        centerX + mouthNoseSize, startY,        // Esq sup der
+        centerX,                 noseTipY,      // Punta abajo
+        MAINCOLOR
+    );
+
+    display->drawLine(centerX, noseTipY, centerX, noseTipY + 2, MAINCOLOR);
+    
+    int mouthStartY = noseTipY + 2; 
+
+    display->drawLine(centerX, mouthStartY, centerX - mouthNoseSize, mouthStartY + 2, MAINCOLOR);
+    display->drawLine(centerX - mouthNoseSize, mouthStartY + 2, centerX - mouthWidth, mouthStartY, MAINCOLOR);
+
+    display->drawLine(centerX, mouthStartY, centerX + mouthNoseSize, mouthStartY + 2, MAINCOLOR);
+    display->drawLine(centerX + mouthNoseSize, mouthStartY + 2, centerX + mouthWidth, mouthStartY, MAINCOLOR);
+  }
+
+  display->display();
 
 } // end of drawEyes method
 
