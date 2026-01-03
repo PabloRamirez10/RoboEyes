@@ -439,7 +439,11 @@ int getScreenConstraint_X(){
 
 // Returns the max y position for left eye
 int getScreenConstraint_Y(){
- return screenHeight-eyeLheightDefault; // using default height here, because height will vary when blinking and in curious mode
+ if (showMouth){
+    return screenHeight-eyeLheightDefault-mouthVerticalGap-((mouthNoseSize*2)+2); // reserve space for mouth
+  } else {
+    return screenHeight-eyeLheightDefault; // using default height here, because height will vary when blinking and in curious mode
+  }
 }
 
 
